@@ -32,6 +32,6 @@ class panel extends JPanel implements ActionListener{
         enviar.addActionListener(this);
     }
     public void actionPerformed(ActionEvent e) {
-        System.out.print("Envio");
+        System.out.print("Enviar");
     }
 }
