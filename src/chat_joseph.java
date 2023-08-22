@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+//Joseph
 public class chat {
     public static void main(String[] args) {
         ventana ventana1 = new ventana();
@@ -10,7 +10,7 @@ public class chat {
 
     }
 }
-class ventana2 extends JFrame{
+class ventana extends JFrame{
     public ventana() {
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
