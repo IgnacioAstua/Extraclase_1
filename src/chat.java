@@ -38,7 +38,7 @@ class panel extends JPanel implements ActionListener{
         add(enviar);
         enviar.addActionListener(this);
 
-        // Inicializar el servidor aparte
+        // Inicializa el servidor aparte
         new Thread(() -> {
             try {
                 ServerSocket serverSocket = new ServerSocket(0); // Elige un puerto disponible
@@ -60,12 +60,12 @@ class panel extends JPanel implements ActionListener{
         try {
             String message = txt.getText();
 
-            // Enviar el mensaje al servidor
+            // Envia el mensaje al servidor
             if (writer != null) {
                 writer.println(message);
             }
 
-            txt.setText(""); // Limpiar el campo de texto
+            txt.setText(""); // Limpia el campo de texto
         } catch (Exception ex) {
             ex.printStackTrace();
         }
