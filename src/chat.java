@@ -37,8 +37,37 @@ class panel extends JPanel implements ActionListener{
         add(txt);
         add(enviar);
         enviar.addActionListener(this);
+
+        // Inicializar el servidor aparte
+        new Thread(() -> {
+            try {
+                ServerSocket serverSocket = new ServerSocket(0); // Elige un puerto disponible
+                System.out.println("Servidor escuchando en el puerto: " + serverSocket.getLocalPort());
+
+                while (true) {
+                    socket = serverSocket.accept();  // Espera a que un cliente se conecte
+                    reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    writer = new PrintWriter(socket.getOutputStream(), true);
+                    System.out.println("Cliente conectado: " + socket.getInetAddress().getHostAddress());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();  // Inicia el hilo del servidor
     }
+
     public void actionPerformed(ActionEvent e) {
-        System.out.print("Enviar");
+        try {
+            String message = txt.getText();
+
+            // Enviar el mensaje al servidor
+            if (writer != null) {
+                writer.println(message);
+            }
+
+            txt.setText(""); // Limpiar el campo de texto
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
