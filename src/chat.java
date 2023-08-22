@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+//Joseph
 public class chat {
     public static void main(String[] args) {
         ventana ventana1 = new ventana();

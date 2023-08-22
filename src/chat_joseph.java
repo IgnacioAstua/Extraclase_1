@@ -10,7 +10,7 @@ public class chat {
 
     }
 }
-class ventana extends JFrame{
+class ventana2 extends JFrame{
     public ventana() {
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
