@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.net.*;
 
 //Joseph
 public class chat {
@@ -25,6 +27,11 @@ class panel extends JPanel implements ActionListener{
     JLabel texto1 = new JLabel("Mensaje");
     JTextField txt = new JTextField(35);
     JButton enviar = new JButton("Enviar");
+
+    Socket socket;
+    BufferedReader reader;
+    PrintWriter writer;
+
     public panel(){
         add(texto1);
         add(txt);
