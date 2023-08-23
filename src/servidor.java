@@ -12,7 +12,7 @@ private ObjectInputStream entrada;
 private ObjectOutputStream salida;
 private int i = 1;
 
-private void publicar_mensaje (final String muestra_mensaje) {
+private void aviso_mensaje (final String muestra_mensaje) {
     SwingUtilities.invokeLater(
         new Runnable(){
             public void run(){
@@ -30,7 +30,7 @@ public void encender_server() {
                 obtener_flujos();
                 procesa_conexion();
             } catch (EOFException e) {
-                publicar_mensaje("\nSe ha terminado la conexión");
+                aviso_mensaje("\nSe ha terminado la conexión");
             } finally {
                 cierra_conexion();
                 i++;
@@ -42,7 +42,24 @@ public void encender_server() {
 }
 
 private void espera_conexion() throws IOException {
-    publicar_mensaje("Esperando conexión\n");
+    aviso_mensaje("Esperando conexión\n");
     conexion = servidor.accept();
-    publicar_mensaje("Conexion " + i + " obtenida de: " + conexion.getInetAddress().getHostAddress());
+    aviso_mensaje("Conexion " + i + " obtenida de: " + conexion.getInetAddress().getHostAddress());
+}
+
+public void obtener_flujos() throws IOException {
+    salida = new ObjectOutputStream(Conexion.getOutputStream());
+    salida.flush();
+    entrada = new ObjectInputStream(conexion.getInputStream());
+    aviso_mensaje("\nObtener flujos: Ok\n");
+}
+
+private void enviar_datos(String mensaje) {
+    try {
+        salida.writeObject("SERVIDOR: " + mensaje);
+        salida.flush();
+        aviso_mensaje("\nSERVIDOR: " + mensaje);
+    } catch (IOException e) {
+        pantalla.append("\nError: ");
+    }
 }
