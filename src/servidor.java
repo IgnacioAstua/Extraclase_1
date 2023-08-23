@@ -1,3 +1,4 @@
+import java.swing.SwingUtilities;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.EOFException;
@@ -12,5 +13,10 @@ private ObjectOutputStream salida;
 private int contador = 1;
 
 private void publicar_mensaje (final String muestra_mensaje) {
-    SwingUtilities.invokeLater
+    SwingUtilities.invokeLater(
+        new Runnable(){
+            public void run(){
+                pantalla.append(muestra_mensaje);
+            }
+        } );
 }
