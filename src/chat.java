@@ -67,7 +67,7 @@ class Panel extends JPanel implements Runnable {
             String IP = ip.getText();
             String mensaje = userName.getText() + ": " + txt.getText();
             try {
-                Socket misocket = new Socket(IP, 9999);
+                Socket misocket = new Socket(IP, 9999);//SOCKET
                 DataOutputStream salida = new DataOutputStream(misocket.getOutputStream());
                 salida.writeUTF(mensaje);
                 salida.close();
