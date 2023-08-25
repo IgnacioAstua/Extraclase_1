@@ -8,10 +8,12 @@ public class chat2 extends JFrame {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
+    private String userName; // Nuevo campo para almacenar el nombre del usuario
 
     private JTextArea chatArea;
     private JTextField messageField;
     private JButton sendButton;
+    private JTextField nameField; // Campo para ingresar el nombre
 
     public chat2(String serverAddress, int serverPort) {
         try {
@@ -35,6 +37,11 @@ public class chat2 extends JFrame {
 
         messageField = new JTextField();
         inputPanel.add(messageField, BorderLayout.CENTER);
+
+        // Agrega un campo para ingresar el nombre
+        nameField = new JTextField();
+        nameField.setPreferredSize(new Dimension(100, 20));
+        inputPanel.add(nameField, BorderLayout.WEST);
 
         sendButton = new JButton("Enviar");
         sendButton.addActionListener(new ActionListener() {
@@ -67,7 +74,8 @@ public class chat2 extends JFrame {
 
     private void sendMessage() {
         String message = messageField.getText();
-        out.println(message);
+        userName = nameField.getText(); // Obtén el nombre del campo
+        out.println(userName + ": " + message); // Agrega el nombre al mensaje
         messageField.setText("");
     }
 
@@ -75,13 +83,14 @@ public class chat2 extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                String serverAddress = "127.0.0.1"; // la dirección IP del servidor 
-                int serverPort = 12345; //puerto que esta usando en el servidor
+                String serverAddress = "127.0.0.1"; // Cambia a la dirección IP del servidor si es necesario
+                int serverPort = 12345; // Cambia al puerto que estés usando en el servidor
                 new chat2(serverAddress, serverPort);
             }
         });
     }
 }
+
 
 
 
