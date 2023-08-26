@@ -8,10 +8,12 @@ public class chat2 extends JFrame {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
+    private String userName;
 
     private JTextArea chatArea;
     private JTextField messageField;
     private JButton sendButton;
+    private JTextField nameField;
 
     public chat2(String serverAddress, int serverPort) {
         try {
@@ -35,6 +37,10 @@ public class chat2 extends JFrame {
 
         messageField = new JTextField();
         inputPanel.add(messageField, BorderLayout.CENTER);
+
+        nameField = new JTextField();
+        nameField.setPreferredSize(new Dimension(100, 20));
+        inputPanel.add(nameField, BorderLayout.WEST);
 
         sendButton = new JButton("Enviar");
         sendButton.addActionListener(new ActionListener() {
@@ -67,7 +73,10 @@ public class chat2 extends JFrame {
 
     private void sendMessage() {
         String message = messageField.getText();
-        out.println(message);
+        userName = nameField.getText();
+        String fullMessage = userName + ": " + message; // Mensaje completo con el nombre
+        chatArea.append(fullMessage + "\n"); 
+        out.println(fullMessage);
         messageField.setText("");
     }
 
@@ -75,13 +84,15 @@ public class chat2 extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                String serverAddress = "127.0.0.1"; // la dirección IP del servidor 
-                int serverPort = 12345; //puerto que esta usando en el servidor
+                String serverAddress = "127.0.0.1"; // dirección IP del servidor
+                int serverPort = 12345; // puerto en el servidor
                 new chat2(serverAddress, serverPort);
             }
         });
     }
 }
+
+
 
 
 
