@@ -2,7 +2,7 @@ Tarea Extra Clase #1
 
 Algoritmos y Estructuras de Datos I
 
-Chat cliente-servidor
+Chat Cliente-Servidor
 
 Integrantes: 
 
