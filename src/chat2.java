@@ -4,6 +4,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
+/**
+ * Esta clase representa un cliente de chat que se conecta a un servidor para enviar y recibir mensajes.
+ */
 public class chat2 extends JFrame {
     private Socket socket;
     private BufferedReader in;
@@ -15,6 +18,12 @@ public class chat2 extends JFrame {
     private JButton sendButton;
     private JTextField nameField;
 
+    /**
+     * Constructor para inicializar la interfaz gráfica del cliente de chat y establecer la conexión con el servidor.
+     *
+     * @param serverAddress La dirección IP del servidor.
+     * @param serverPort El puerto del servidor.
+     */
     public chat2(String serverAddress, int serverPort) {
         try {
             socket = new Socket(serverAddress, serverPort);
@@ -71,15 +80,23 @@ public class chat2 extends JFrame {
         }).start();
     }
 
+    /**
+     * Envía un mensaje al servidor y lo muestra en la ventana de chat.
+     */
     private void sendMessage() {
         String message = messageField.getText();
         userName = nameField.getText();
         String fullMessage = userName + ": " + message; // Mensaje completo con el nombre
-        chatArea.append(fullMessage + "\n"); 
+        chatArea.append(fullMessage + "\n");
         out.println(fullMessage);
         messageField.setText("");
     }
 
+    /**
+     * Punto de entrada principal para iniciar el cliente de chat.
+     *
+     * @param args Los argumentos de la línea de comandos (no se utilizan aquí).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -91,6 +108,7 @@ public class chat2 extends JFrame {
         });
     }
 }
+
 
 
 

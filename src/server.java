@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * Esta clase representa un servidor de chat que acepta conexiones de múltiples clientes.
+ * @author Joseph Piedra Montero 
+ */
 public class server {
-    private static final int PORT = 12345; // Elige un puerto disponible automáticamente
+    private static final int PORT = 12345; // Puerto para el servidor
     private static final List<ChatHandler> chatHandlers = new ArrayList<>();
+
+    /**
+     * Punto de entrada del servidor de chat.
+     */
     public static void main(String[] args) {
         try {
             // Crea un socket del servidor en el puerto especificado
@@ -29,16 +37,31 @@ public class server {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Obtiene una lista de manejadores de chat activos.
+     *
+     * @return Lista de manejadores de chat.
+     */
     public static List<ChatHandler> getChatHandlers() {
         return chatHandlers;
     }
 }
 
+/**
+ * Esta clase representa un manejador para las conexiones de chat de los clientes.
+ */
 class ChatHandler implements Runnable {
     private Socket clientSocket;
     private BufferedReader in;
     private PrintWriter out;
 
+    /**
+     * Constructor para crear un manejador de chat para un cliente.
+     *
+     * @param socket Socket de cliente.
+     * @throws IOException Si ocurre un error de E/S.
+     */
     public ChatHandler(Socket socket) throws IOException {
         // Inicializa flujos de entrada y salida para la comunicación con el cliente
         this.clientSocket = socket;
@@ -55,7 +78,7 @@ class ChatHandler implements Runnable {
                 System.out.println("Mensaje recibido: " + message);
                 // Retransmite el mensaje a todos los demás clientes conectados
                 List<ChatHandler> chatHandlers = server.getChatHandlers();
-                for (ChatHandler handler : chatHandlers) { // Accede a la lista a través de la clase server
+                for (ChatHandler handler : chatHandlers) { // Accede a la lista a través de la clase Server
                     if (handler != this) { // Evita retransmitir al cliente actual
                         handler.sendMessage(message);
                     }
@@ -75,10 +98,15 @@ class ChatHandler implements Runnable {
         }
     }
 
-        // Método para enviar un mensaje a este cliente
+    /**
+     * Envía un mensaje al cliente.
+     *
+     * @param message Mensaje a enviar.
+     */
     public void sendMessage(String message) {
         out.println(message);
     }
 }
+
 
 
