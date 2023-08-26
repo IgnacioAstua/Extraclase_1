@@ -11,37 +11,52 @@ public class chat {
 
     }
 }
-class Ventana extends JFrame{
+
+// Ventana del chat
+class Ventana extends JFrame {
     public Ventana() {
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLocation(150, 50);
-        setTitle("Chat1");
+        setTitle("Chat");
         panel panel1 = new panel();
         add(panel1);
     }
 }
-class panel extends JPanel implements Runnable{
-    JTextField txt = new JTextField(35);
-    JTextField ip = new JTextField(8);
-    JTextField port = new JTextField(8);
-    JTextArea txt_area = new JTextArea(20, 35);
-    public panel(){
+
+// Panel que contiene los elementos de la interfaz
+class panel extends JPanel implements Runnable {
+    JTextField txt = new JTextField(30); // Campo de texto para escribir el mensaje
+    JTextField nombre = new JTextField(30); // Campo de texto para escribir el nombre
+    JTextField ip = new JTextField(10);// Campo de texto para escribir la IP a la cual se enviara el mensaje
+    JTextField port = new JTextField(8);// Campo de texto para escribir el puerto que se usara
+    JTextArea txt_area = new JTextArea(20, 35);// Area de texto que recibe los mensajes
+    String port_s = port.getText();
+    int x = 10;
+    int y;
+
+    public panel() {
         JLabel Ip = new JLabel("IP:");
         add(Ip);
         add(ip);
         JLabel puerto = new JLabel("Puerto:");
         add(puerto);
+        port.setText("1000");
         add(port);
         JButton conectar = new JButton("Conectar");
         Conexion conexion = new Conexion();
         conectar.addActionListener(conexion);
         add(conectar);
-        JLabel sms = new JLabel("Mensajes:");
+        JLabel sms = new JLabel("Chat:");
         add(sms);
         txt_area.setEditable(false);
         add(txt_area);
+        JLabel nombre_txt = new JLabel("Nombre");
+        add(nombre_txt);
+        add(nombre);
+        JLabel mensaje_txt = new JLabel("Mensaje:");
+        add(mensaje_txt);
         add(txt);
         JButton enviar = new JButton("Enviar");
         Envia envio = new Envia();
@@ -50,12 +65,16 @@ class panel extends JPanel implements Runnable{
         Thread hilo1 = new Thread(this);
         hilo1.start();
 
+        y = 1000;
     }
-    private class Conexion implements ActionListener{
+
+    private class Conexion implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("GG");
+            port_s = port.getText();
+            y = Integer.parseInt(port_s);
+            System.out.print(y);
             try {
                 Socket socket_conexion = new Socket("192.168.0.20", 9990);
                 Cliente datos = new Cliente();
@@ -64,56 +83,52 @@ class panel extends JPanel implements Runnable{
                 ObjectOutputStream usuario = new ObjectOutputStream(socket_conexion.getOutputStream());
                 usuario.writeObject(datos);
                 socket_conexion.close();
-            }
-            catch (UnknownHostException e1){
+            } catch (UnknownHostException e1) {
                 e1.printStackTrace();
-            }
-            catch (IOException e1){
+            } catch (IOException e1) {
                 System.out.println(e1.getMessage());
             }
         }
     }
 
-    private class Envia implements ActionListener{
+    private class Envia implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String IP = ip.getText();
+            String Nombre = nombre.getText() + ": ";
+            System.out.print(y);
             try {
-                Socket misocket = new Socket(IP, 9990);
+                Socket misocket = new Socket("192.168.0.20", 9990);
                 DataOutputStream salida = new DataOutputStream(misocket.getOutputStream());
-                salida.writeUTF(txt.getText());
+                salida.writeUTF(Nombre + txt.getText());
                 salida.close();
-            }
-            catch (UnknownHostException e1){
+            } catch (UnknownHostException e1) {
                 e1.printStackTrace();
-            }
-            catch (IOException e1){
+            } catch (IOException e1) {
                 System.out.println(e1.getMessage());
             }
 
         }
 
-
     }
+
     @Override
     public void run() {
-        int puerto = Integer.parseInt(port.getText());
         try {
-            ServerSocket servidor = new ServerSocket(puerto);
+            ServerSocket receptor = new ServerSocket(y);
             while (true) {
-                Socket misocket = servidor.accept();
+                Socket misocket = receptor.accept();
                 DataInputStream entrada = new DataInputStream(misocket.getInputStream());
                 String mensaje = entrada.readUTF();
                 txt_area.append("\n" + mensaje);
                 misocket.close();
             }
-        }
-        catch (IOException e1) {
+        } catch (IOException e1) {
             throw new RuntimeException(e1);
         }
     }
 }
-class Cliente implements Serializable{
+
+class Cliente implements Serializable {
     private String ip, port;
 
     public String getIp() {
