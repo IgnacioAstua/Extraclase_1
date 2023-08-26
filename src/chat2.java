@@ -6,6 +6,7 @@ import java.net.*;
 
 /**
  * Esta clase representa un cliente de chat que se conecta a un servidor para enviar y recibir mensajes.
+ * @author Joseph Piedra Montero
  */
 public class chat2 extends JFrame {
     private Socket socket;
